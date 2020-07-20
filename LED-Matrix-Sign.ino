@@ -91,7 +91,7 @@ void setup() {
    
 //   wholeStrip.begin();    //wholeStrip.show(); 
 
-   //Serial.begin(9600);
+//   Serial.begin(9600);
    matrix.begin();
    matrix.setTextWrap(false);
    matrix.setBrightness(50); // was 150
@@ -102,7 +102,10 @@ void setup() {
 
 
 
-//--------------------------------------------------------------------------------
+/*==========================================================================
+        @@@      MAIN   LOOP      @@@
+  ==========================================================================
+*/ 
 void loop() {
 
    blinkLED(3);
@@ -110,8 +113,12 @@ void loop() {
 //   digitalWrite(13, HIGH);
    lightsOff();
   
-//   testMatrixWipe(1); lightsOff(); delay(500);
+  // testMatrixWipe(1); lightsOff(); delay(500);
+  // testMatrixSerialWipe(5); lightsOff(); delay(500);
 
+   //rainbow(5);
+
+   
 /*
    // fix the screen with purple 
    matrix.fillRect(0, 0, NUM_COL, NUM_ROW, color(PURPLE)); matrix.show();
@@ -140,15 +147,33 @@ void loop() {
    
    delay(1000); 
 */
+
+
 //   lightsOff(); delay(500); 
 
-   scrollText("Congratulations Ian and Lucas...    ");
+   // rainbowCycle(1); lightsOff(); delay(250);
+
+   //Serial.println("Calling theaterChaseRainbow");
+   theaterChaseRainbow(25); lightsOff(); delay(250);
+
+   amazonSmile(50); lightsOff(); delay(500);
+   
+   scrollText("Amazon Fulfillment Tech    ");
+   
    alderaan(); lightsOff(); delay(250); 
     
-   //rainbowCycle(1); lightsOff(); delay(250);
+   scrollText("AFT Inventory Control   ");      
+   
+   delay(500); 
+   
+   pacman(); lightsOff(); delay(250);
+   
+//   scrollText("Welcome New Hires    ");
+   
+   delay(250); boxAnimation(5); lightsOff(); delay(250);
 
-   scrollText("for graduating from high school...   ");      
-   delay(250); pacman(); lightsOff(); delay(250);
+
+
 /*   
    // Draw a bunch of rectangles "going down"
    matrix.drawRect(0, 0, NUM_COL,   NUM_ROW,   matrix.Color(255, 0, 0)); matrix.show(); delay(500); 
@@ -162,10 +187,6 @@ void loop() {
    matrix.drawRect(1, 1, NUM_COL-2, NUM_ROW-2, matrix.Color(0, 0, 0)); matrix.show(); delay(500); 
    matrix.drawRect(0, 0, NUM_COL,   NUM_ROW, matrix.Color(0, 0, 0)); matrix.show(); delay(500); 
 */
-   scrollText("and turning out to be good people...    ");
-   delay(250); boxAnimation(5); lightsOff(); delay(250);
-
-   scrollText("except when you don't listen to your parents... (HA!)    ");
 
 /*   colorWipe(color(RED),   3, 1); // Red
    colorWipe(color(GREEN), 3, 0); // Green
@@ -177,15 +198,12 @@ void loop() {
    theaterChase(wholeStrip.Color(127, 0, 0), 50); // Red
    theaterChase(wholeStrip.Color(0, 0, 127), 50); // Blue
 */
-   theaterChaseRainbow(50); lightsOff(); delay(250);
-
-   scrollText("Good luck at college in the fall!    ");
 
     delay(200);
 } // end loop
 
 /*==========================================================================
-  alderaan: death start blowing up alderaan animation without sprites
+  alderaan: death star blowing up alderaan animation without sprites
   ==========================================================================
 */  
 void alderaan(){
@@ -290,6 +308,70 @@ void pacman(){
   
 } // end pacman
 
+/*==========================================================================
+  amazonSmile: scrolls an Amazon Smile across the display
+  ==========================================================================
+*/  
+void amazonSmile(uint8_t wait){
+   int drawColor = color(YELLOW);
+   int i;
+  
+   for(int i=NUM_COL; i>=-20; i--) {
+
+      matrix.fillScreen(0);
+      matrix.setCursor(i-7, 0);
+      matrix.print("A");
+    
+      // swoosh
+      matrix.drawPixel(i, 3, drawColor);
+      matrix.drawPixel(i, 4, drawColor);
+      matrix.drawPixel(i+1, 5, drawColor);
+      matrix.drawPixel(i+2, 6, drawColor);
+      matrix.drawPixel(i+3, 6, drawColor);
+      matrix.drawPixel(i+4, 7, drawColor);
+      matrix.drawPixel(i+5, 7, drawColor);
+      matrix.drawPixel(i+6, 7, drawColor);
+      matrix.drawPixel(i+7, 7, drawColor);
+      matrix.drawPixel(i+8, 6, drawColor);
+      matrix.drawPixel(i+9, 6, drawColor);
+      matrix.drawPixel(i+10, 5, drawColor);
+
+      // t
+      matrix.drawPixel(i+2, 0, drawColor);
+      matrix.drawPixel(i+3, 0, drawColor);
+      matrix.drawPixel(i+3, 1, drawColor);
+      matrix.drawPixel(i+3, 2, drawColor);
+      matrix.drawPixel(i+3, 3, drawColor);
+      matrix.drawPixel(i+4, 0, drawColor);
+      // o
+      matrix.drawPixel(i+6, 1, drawColor);
+      matrix.drawPixel(i+6, 2, drawColor);
+      matrix.drawPixel(i+7, 0, drawColor);
+      matrix.drawPixel(i+7, 3, drawColor);
+      matrix.drawPixel(i+8, 1, drawColor);
+      matrix.drawPixel(i+8, 2, drawColor);
+      
+      // arrowhead
+      matrix.drawPixel(i+10, 3, drawColor);
+      matrix.drawPixel(i+11, 3, drawColor);
+      matrix.drawPixel(i+11, 4, drawColor);
+      matrix.drawPixel(i+12, 3, drawColor);
+      matrix.drawPixel(i+12, 4, drawColor);
+      matrix.drawPixel(i+12, 5, drawColor);
+
+      matrix.setCursor(i+15, 0);
+      matrix.print("Z");
+      
+      matrix.show();
+      delay(wait);
+      //lightsOff();
+   }
+   //matrix.setCursor(5, 0);
+   //   matrix.print("A");
+   //matrix.show();
+   //delay(1000);
+} // end AmazonSmile
+
 //==========================================================================
 void boxAnimation(int numTimes) {
  
@@ -342,7 +424,7 @@ void scrollText(const char* message) {
   
 } // end scrollText
 
-/*
+
 //==========================================================================
 // rainbow
 void rainbow(uint8_t wait) {
@@ -350,13 +432,14 @@ void rainbow(uint8_t wait) {
 
   Serial.println("-rainbow");
   for(j=0; j<(256); j++) {
-    for(i=0; i<wholeStrip.numPixels(); i++) {
-      wholeStrip.setPixelColor(i, Wheel((i+j) & 255));
+    for(i=0; i<matrix.numPixels(); i++) {
+      matrix.setPixelColor(i, Wheel((i+j) & 255));
     }
-    wholeStrip.show();
+    matrix.show();
     delay(wait);
   }
 } // end rainbow
+
 
 //==========================================================================
 // rainbowCycle - makes a rainbow equally distributed throughout the strand
@@ -364,16 +447,17 @@ void rainbow(uint8_t wait) {
 void rainbowCycle(uint8_t wait) {
   uint16_t i, j;
 
-  Serial.println("-rainbowCycle");
+  // Serial.println("-rainbowCycle");
   for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
-    for(i=0; i< wholeStrip.numPixels(); i++) {
-      wholeStrip.setPixelColor(i, Wheel( ( (i * 256 / wholeStrip.numPixels() ) + j) & 255) );
+    for(i=0; i< matrix.numPixels(); i++) {
+      matrix.setPixelColor(i, Wheel( ( (i * 256 / matrix.numPixels() ) + j) & 255) );
     }
-    wholeStrip.show();
+    matrix.show();
     delay(wait);
   }
 } // end rainbowCycle
 
+/*
 //==========================================================================
 // Theatre-style crawling lights.
 void theaterChase(uint32_t c, uint8_t wait) {
@@ -440,6 +524,21 @@ void colorWipe(uint32_t c, uint8_t wait, int forward) {
    } // end if
 } // end colorWipe
 
+
+/*===========================================================================
+  // figure ou the matrix addressing model
+  // left to right, top to bottom wipe
+*/
+void testMatrixSerialWipe(int wait){
+  int i;
+  Serial.println("-testMatrixSerialWipe");
+  for(i=0; i< matrix.numPixels(); i++) {
+      //matrix.setPixelColor(i, matrix.Color(0,255,255));
+      matrix.setPixelColor(i, 255,0,255);
+      matrix.show();
+      delay(wait);
+    }
+} // end testMatrixSerialWipe
 
 /*===========================================================================
   // figure ou the matrix addressing model
