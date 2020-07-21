@@ -94,7 +94,7 @@ void setup() {
 //   Serial.begin(9600);
    matrix.begin();
    matrix.setTextWrap(false);
-   matrix.setBrightness(50); // was 150
+   matrix.setBrightness(25); // was 50
    matrix.setTextColor(matrix.Color(0,255,0));
   
 
@@ -148,33 +148,25 @@ void loop() {
    delay(1000); 
 */
 
-
 //   lightsOff(); delay(500); 
 
-   // rainbowCycle(1); lightsOff(); delay(250);
+//   rainbowCycle(1); lightsOff(); delay(250);
 
+   boxAnimation(5); lightsOff(); delay(250);
+
+   alderaan(); lightsOff(); delay(250); 
+    
    //Serial.println("Calling theaterChaseRainbow");
    theaterChaseRainbow(25); lightsOff(); delay(250);
 
-   amazonSmile(50); lightsOff(); delay(500);
+   amazonSmile(50); lightsOff(); delay(250);
    
-   scrollText("Amazon Fulfillment Tech    ");
-   
-   alderaan(); lightsOff(); delay(250); 
-    
-   scrollText("AFT Inventory Control   ");      
-   
-   delay(500); 
-   
-   pacman(); lightsOff(); delay(250);
-   
-//   scrollText("Welcome New Hires    ");
-   
-   delay(250); boxAnimation(5); lightsOff(); delay(250);
+   scrollText("Amazon Fulfillment Tech    "); delay(500);
 
+   pacman(); lightsOff(); delay(500);
 
+   scrollText("AFT Inventory Control   "); delay(250); 
 
-/*   
    // Draw a bunch of rectangles "going down"
    matrix.drawRect(0, 0, NUM_COL,   NUM_ROW,   matrix.Color(255, 0, 0)); matrix.show(); delay(500); 
    matrix.drawRect(1, 1, NUM_COL-2, NUM_ROW-2, matrix.Color(0, 255, 0)); matrix.show(); delay(500); 
@@ -186,18 +178,18 @@ void loop() {
    matrix.drawRect(2, 2, NUM_COL-4, NUM_ROW-4, matrix.Color(0, 0, 0)); matrix.show(); delay(500); 
    matrix.drawRect(1, 1, NUM_COL-2, NUM_ROW-2, matrix.Color(0, 0, 0)); matrix.show(); delay(500); 
    matrix.drawRect(0, 0, NUM_COL,   NUM_ROW, matrix.Color(0, 0, 0)); matrix.show(); delay(500); 
-*/
+
 
 /*   colorWipe(color(RED),   3, 1); // Red
    colorWipe(color(GREEN), 3, 0); // Green
    colorWipe(color(BLUE),  3, 1); // Blue
    */
-/*
+
    // Send a theater pixel chase in...
-   theaterChase(wholeStrip.Color(127, 127, 127), 50); // White
-   theaterChase(wholeStrip.Color(127, 0, 0), 50); // Red
-   theaterChase(wholeStrip.Color(0, 0, 127), 50); // Blue
-*/
+//   theaterChase(color(WHITE), 50); // White
+//   theaterChase(color(RED), 50); // Red
+//   theaterChase(color(BLUE), 50); // Blue
+
 
     delay(200);
 } // end loop
@@ -364,12 +356,7 @@ void amazonSmile(uint8_t wait){
       
       matrix.show();
       delay(wait);
-      //lightsOff();
    }
-   //matrix.setCursor(5, 0);
-   //   matrix.print("A");
-   //matrix.show();
-   //delay(1000);
 } // end AmazonSmile
 
 //==========================================================================
@@ -428,9 +415,9 @@ void scrollText(const char* message) {
 //==========================================================================
 // rainbow
 void rainbow(uint8_t wait) {
-  uint16_t i, j;
+  int i, j;
 
-  Serial.println("-rainbow");
+  //Serial.println("-rainbow");
   for(j=0; j<(256); j++) {
     for(i=0; i<matrix.numPixels(); i++) {
       matrix.setPixelColor(i, Wheel((i+j) & 255));
@@ -444,44 +431,44 @@ void rainbow(uint8_t wait) {
 //==========================================================================
 // rainbowCycle - makes a rainbow equally distributed throughout the strand
 //==========================================================================
-void rainbowCycle(uint8_t wait) {
-  uint16_t i, j;
+void rainbowCycle(int wait) {
+  int i, j;
 
   // Serial.println("-rainbowCycle");
   for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
     for(i=0; i< matrix.numPixels(); i++) {
-      matrix.setPixelColor(i, Wheel( ( (i * 256 / matrix.numPixels() ) + j) & 255) );
+      matrix.setPixelColor(i, (uint32_t) Wheel( ( (i * (uint32_t)256 / (uint32_t)matrix.numPixels() ) + (uint32_t)j) & 255) );
     }
     matrix.show();
     delay(wait);
   }
 } // end rainbowCycle
 
-/*
+
 //==========================================================================
 // Theatre-style crawling lights.
-void theaterChase(uint32_t c, uint8_t wait) {
+void theaterChase(uint32_t c, int wait) {
   for (int j=0; j<10; j++) {  //do 10 cycles of chasing
     for (int q=0; q < 3; q++) {
-      for (int i=0; i < wholeStrip.numPixels(); i=i+3) {
-        wholeStrip.setPixelColor(i+q, c);    //turn every third pixel on
+      for (int i=0; i < matrix.numPixels(); i=i+3) {
+        matrix.setPixelColor(i+q, c);    //turn every third pixel on
       }
-      wholeStrip.show();
+      matrix.show();
 
       delay(wait);
 
-      for (int i=0; i < wholeStrip.numPixels(); i=i+3) {
-        wholeStrip.setPixelColor(i+q, 0);        //turn every third pixel off
+      for (int i=0; i < matrix.numPixels(); i=i+3) {
+        matrix.setPixelColor(i+q, 0);        //turn every third pixel off
       }
     } // end q loop
   } // end j loop
 }
-*/
+
 
 
 //==========================================================================
 //Theatre-style crawling lights with rainbow effect
-void theaterChaseRainbow(uint8_t wait) {
+void theaterChaseRainbow(int wait) {
   for (int j=0; j < 256; j=j+3) {     // cycle all 256 colors in the wheel
     for (int q=0; q < 3; q++) {
       for (int i=0; i < matrix.numPixels(); i=i+3) {
@@ -571,7 +558,7 @@ uint16_t color(unsigned long c) {
 // The colours are a transition r - g - b - back to r.
 //==========================================================================
 
-uint32_t Wheel(byte WheelPos) {
+uint16_t Wheel(uint16_t WheelPos) {
   WheelPos = 255 - WheelPos;
   if(WheelPos < 85) {
     return matrix.Color(255 - WheelPos * 3, 0, WheelPos * 3);
